@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Abdelkrim Kaabar | عبدالكريم قبار</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Tajawal:wght@300;400;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --bg2: #111118;
+    --accent: #c8a96e;
+    --accent2: #7c9ebd;
+    --text: #e8e4dc;
+    --muted: #7a7a8a;
+    --border: rgba(200,169,110,0.2);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Tajawal', sans-serif;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Custom cursor */
+  .cursor {
+    width: 12px; height: 12px;
+    background: var(--accent);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.15s ease;
+    mix-blend-mode: difference;
+  }
+  .cursor-follower {
+    width: 36px; height: 36px;
+    border: 1px solid var(--accent);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9998;
+    transition: all 0.3s ease;
+    opacity: 0.5;
+  }
+
+  /* Noise overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.3;
+  }
+
+  /* Language toggle */
+  .lang-toggle {
+    position: fixed;
+    top: 24px; left: 24px;
+    z-index: 500;
+    display: flex;
+    gap: 4px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border);
+    border-radius: 40px;
+    padding: 4px;
+    backdrop-filter: blur(10px);
+  }
+  .lang-btn {
+    padding: 6px 16px;
+    border-radius: 30px;
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    cursor: none;
+    transition: all 0.3s;
+    letter-spacing: 1px;
+  }
+  .lang-btn.active {
+    background: var(--accent);
+    color: var(--bg);
+    font-weight: 700;
+  }
+
+  /* Nav */
+  nav {
+    position: fixed;
+    top: 24px; right: 24px;
+    z-index: 500;
+    display: flex;
+    gap: 28px;
+    align-items: center;
+  }
+  nav a {
+    color: var(--muted);
+    text-decoration: none;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    transition: color 0.3s;
+    text-transform: uppercase;
+  }
+  nav a:hover { color: var(--accent); }
+
+  /* Hero */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    position: relative;
+    padding: 80px 40px;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 80% 50%, rgba(200,169,110,0.08) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 60% at 20% 80%, rgba(124,158,189,0.06) 0%, transparent 70%);
+  }
+
+  .hero-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(200,169,110,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(200,169,110,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
+  }
+
+  .hero-content {
+    position: relative;
+    text-align: center;
+    max-width: 900px;
+  }
+
+  .hero-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 4px;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 28px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.2s forwards;
+  }
+
+  .hero-name {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(52px, 8vw, 110px);
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 8px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.4s forwards;
+    background: linear-gradient(135deg, var(--text) 0%, var(--accent) 60%, var(--text) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-name-ar {
+    font-family: 'Tajawal', sans-serif;
+    font-size: clamp(28px, 4vw, 52px);
+    font-weight: 300;
+    color: var(--muted);
+    margin-bottom: 40px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.5s forwards;
+    letter-spacing: 2px;
+  }
+
+  .hero-roles {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 48px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.7s forwards;
+  }
+
+  .role-tag {
+    padding: 8px 20px;
+    border: 1px solid var(--border);
+    border-radius: 40px;
+    font-size: 13px;
+    color: var(--muted);
+    background: rgba(255,255,255,0.02);
+    backdrop-filter: blur(4px);
+    transition: all 0.3s;
+  }
+  .role-tag:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(200,169,110,0.05);
+  }
+
+  .hero-cta {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.9s forwards;
+  }
+
+  .btn-primary {
+    padding: 14px 36px;
+    background: var(--accent);
+    color: var(--bg);
+    border: none;
+    border-radius: 4px;
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: none;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-primary::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(255,255,255,0.2);
+    transform: translateX(-100%);
+    transition: transform 0.3s;
+  }
+  .btn-primary:hover::before { transform: translateX(0); }
+
+  .btn-secondary {
+    padding: 14px 36px;
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: none;
+    transition: all 0.3s;
+  }
+  .btn-secondary:hover {
+    border-color: var(--accent2);
+    color: var(--accent2);
+  }
+
+  /* Scroll indicator */
+  .scroll-hint {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    opacity: 0;
+    animation: fadeIn 1s 1.5s forwards;
+  }
+  .scroll-hint span {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 3px;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  .scroll-line {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(var(--accent), transparent);
+    animation: scrollPulse 2s infinite;
+  }
+
+  /* Sections */
+  section {
+    padding: 100px 40px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 4px;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+    max-width: 80px;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(32px, 5vw, 56px);
+    font-weight: 700;
+    margin-bottom: 60px;
+    line-height: 1.1;
+  }
+
+  /* About */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: start;
+  }
+
+  @media (max-width: 768px) {
+    .about-grid { grid-template-columns: 1fr; gap: 40px; }
+    nav { display: none; }
+  }
+
+  .about-text p {
+    font-size: 16px;
+    line-height: 1.9;
+    color: rgba(232,228,220,0.75);
+    margin-bottom: 20px;
+  }
+
+  .about-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+
+  .stat-card {
+    padding: 28px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: rgba(255,255,255,0.02);
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    transform: scaleX(0);
+    transition: transform 0.4s;
+  }
+  .stat-card:hover::before { transform: scaleX(1); }
+  .stat-card:hover { border-color: rgba(200,169,110,0.4); }
+
+  .stat-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 40px;
+    font-weight: 700;
+    color: var(--accent);
+    display: block;
+    margin-bottom: 8px;
+  }
+  .stat-label {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  /* Research / Projects */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 24px;
+  }
+
+  .project-card {
+    padding: 36px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--bg2);
+    transition: all 0.4s;
+    position: relative;
+    overflow: hidden;
+    cursor: none;
+  }
+  .project-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(200,169,110,0.06), transparent 60%);
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+  .project-card:hover::after { opacity: 1; }
+  .project-card:hover {
+    border-color: rgba(200,169,110,0.35);
+    transform: translateY(-4px);
+  }
+
+  .project-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 3px;
+    color: var(--accent2);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    display: block;
+  }
+
+  .project-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    margin-bottom: 14px;
+    line-height: 1.3;
+  }
+
+  .project-desc {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.8;
+  }
+
+  .project-arrow {
+    margin-top: 24px;
+    color: var(--accent);
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    opacity: 0;
+    transform: translateX(-8px);
+    transition: all 0.3s;
+  }
+  .project-card:hover .project-arrow {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  /* Publications */
+  .pub-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .pub-item {
+    padding: 28px 0;
+    border-bottom: 1px solid var(--border);
+    display: grid;
+    grid-template-columns: 60px 1fr auto;
+    gap: 24px;
+    align-items: center;
+    transition: all 0.3s;
+    cursor: none;
+  }
+  .pub-item:hover { padding-right: 16px; }
+  .pub-item:first-child { border-top: 1px solid var(--border); }
+
+  .pub-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    opacity: 0.5;
+  }
+
+  .pub-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px;
+    margin-bottom: 6px;
+  }
+  .pub-meta {
+    font-size: 12px;
+    color: var(--muted);
+    font-family: 'Space Mono', monospace;
+  }
+
+  .pub-year {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    white-space: nowrap;
+  }
+
+  /* Contact */
+  .contact-wrap {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+  @media (max-width: 768px) {
+    .contact-wrap { grid-template-columns: 1fr; gap: 40px; }
+  }
+
+  .contact-text {
+    font-size: 15px;
+    line-height: 1.9;
+    color: rgba(232,228,220,0.7);
+    margin-bottom: 32px;
+  }
+
+  .social-links {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .social-link {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 24px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    text-decoration: none;
+    color: var(--text);
+    transition: all 0.3s;
+    font-size: 14px;
+    cursor: none;
+  }
+  .social-link:hover {
+    border-color: var(--accent);
+    background: rgba(200,169,110,0.05);
+    color: var(--accent);
+    transform: translateX(-8px);
+  }
+  .social-icon {
+    width: 36px; height: 36px;
+    background: var(--border);
+    border-radius: 6px;
+    display: grid;
+    place-items: center;
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    flex-shrink: 0;
+  }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    padding: 40px;
+    border-top: 1px solid var(--border);
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 2px;
+  }
+
+  /* Animations */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 1; transform: scaleY(1); }
+    50% { opacity: 0.3; transform: scaleY(0.6); }
+  }
+
+  /* Reveal on scroll */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Arabic mode */
+  .ar { display: block; }
+  .en { display: none; }
+  html[lang="en"] .ar { display: none; }
+  html[lang="en"] .en { display: block; }
+  html[lang="en"] { direction: ltr; }
+  html[lang="ar"] { direction: rtl; }
+  html[lang="en"] .social-link:hover { transform: translateX(8px); }
+  html[lang="en"] .pub-item:hover { padding-left: 16px; padding-right: 0; }
+
+  /* Divider line */
+  .divider {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border), transparent);
+    margin: 0 auto;
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-follower" id="follower"></div>
+
+<!-- Language Toggle -->
+<div class="lang-toggle">
+  <button class="lang-btn" onclick="setLang('ar')" id="btn-ar">ع</button>
+  <button class="lang-btn active" onclick="setLang('en')" id="btn-en">EN</button>
+</div>
+
+<!-- Navigation -->
+<nav>
+  <a href="#about"><span class="ar">عني</span><span class="en">About</span></a>
+  <a href="#research"><span class="ar">أبحاث</span><span class="en">Research</span></a>
+  <a href="#publications"><span class="ar">منشورات</span><span class="en">Publications</span></a>
+  <a href="#contact"><span class="ar">تواصل</span><span class="en">Contact</span></a>
+</nav>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <div class="hero-label">
+      <span class="ar">عالم نفس · باحث في الذكاء الاصطناعي · المغرب</span>
+      <span class="en">Psychologist · AI Researcher · Morocco</span>
+    </div>
+    <h1 class="hero-name">Abdelkrim Kaabar</h1>
+    <div class="hero-name-ar">
+      <span class="ar">عبدالكريم قبار</span>
+      <span class="en" style="font-family:'Playfair Display',serif;font-style:italic;font-size:0.6em;">د. عبدالكريم قبار</span>
+    </div>
+    <div class="hero-roles">
+      <span class="role-tag"><span class="ar">جامعة ابن طفيل، القنيطرة</span><span class="en">Ibn Tofail University, Kénitra</span></span>
+      <span class="role-tag"><span class="ar">مؤسس Soon</span><span class="en">Founder of Soon</span></span>
+      <span class="role-tag"><span class="ar">سلسلة Kaabar Psycho-AI</span><span class="en">Kaabar Psycho-AI Series</span></span>
+    </div>
+    <div class="hero-cta">
+      <a href="#research" class="btn-primary">
+        <span class="ar">استكشف الأبحاث</span>
+        <span class="en">Explore Research</span>
+      </a>
+      <a href="#contact" class="btn-secondary">
+        <span class="ar">تواصل معي</span>
+        <span class="en">Get in Touch</span>
+      </a>
+    </div>
+  </div>
+  <div class="scroll-hint">
+    <div class="scroll-line"></div>
+    <span><span class="ar">اكتشف</span><span class="en">Scroll</span></span>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- About -->
+<section id="about">
+  <div class="section-label">
+    <span class="ar">من أنا</span><span class="en">About</span>
+  </div>
+  <h2 class="section-title reveal">
+    <span class="ar">علم النفس<br>في خدمة المستقبل</span>
+    <span class="en">Psychology<br>Shaping the Future</span>
+  </h2>
+  <div class="about-grid">
+    <div class="about-text reveal">
+      <p class="ar">أنا عبدالكريم قبار، عالم نفس وباحث في الذكاء الاصطناعي بجامعة ابن طفيل بالمغرب. أعمل على تقاطع علم النفس وتطوير الذكاء الاصطناعي، مستكشفاً كيف يمكن للفهم النفسي العميق أن يُشكّل أنظمة ذكاء اصطناعي أكثر أماناً وانسجاماً مع الطبيعة البشرية.</p>
+      <p class="en">I am Abdelkrim Kaabar, a psychologist and AI researcher at Ibn Tofail University, Morocco. My work sits at the intersection of psychology and artificial intelligence — exploring how deep psychological understanding can shape safer, more aligned AI systems.</p>
+      <p class="ar">تشمل اهتماماتي البحثية: بنية الوعي الإنساني، نظرية الشاهد الأصيل، والنفس البشرية كإطار بديل للذكاء في سياق الذكاء الاصطناعي العام.</p>
+      <p class="en">My research interests span: the architecture of human consciousness, the Primordial Witness theory, and the human psyche as an alternative framework to "intelligence" in the context of AGI.</p>
+    </div>
+    <div class="about-stats reveal">
+      <div class="stat-card">
+        <span class="stat-number">8</span>
+        <span class="stat-label ar">أوراق بحثية في سلسلة Kaabar Psycho-AI</span>
+        <span class="stat-label en">Papers in the Kaabar Psycho-AI Series</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-number">3</span>
+        <span class="stat-label ar">كتب أكاديمية منشورة</span>
+        <span class="stat-label en">Academic Books Published</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-number">Soon</span>
+        <span class="stat-label ar">تطبيق نفسي رقمي للدعم النفسي للإنسان والحيوان</span>
+        <span class="stat-label en">Psycho-digital app for human & animal wellbeing</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-number">∞</span>
+        <span class="stat-label ar">ربط علم النفس بالذكاء الاصطناعي العام</span>
+        <span class="stat-label en">Bridging Psychology & AGI Alignment</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- Research -->
+<section id="research">
+  <div class="section-label">
+    <span class="ar">الأبحاث والمشاريع</span><span class="en">Research & Projects</span>
+  </div>
+  <h2 class="section-title reveal">
+    <span class="ar">مجالات<br>الاهتمام البحثي</span>
+    <span class="en">Areas of<br>Research Focus</span>
+  </h2>
+  <div class="projects-grid">
+    <div class="project-card reveal" onmousemove="cardGlow(this,event)">
+      <span class="project-tag">Psycho-AI Series</span>
+      <h3 class="project-title ar">الشاهد الأصيل والمصدر الواحد</h3>
+      <h3 class="project-title en">The Primordial Witness & Unitary Source</h3>
+      <p class="project-desc ar">إطار نظري يستكشف طبقات الحياة الداخلية من الهوية إلى الوعي إلى اللاوعي إلى المعرفة الحزينة وصولاً إلى الشاهد الأصيل والمصدر الواحد.</p>
+      <p class="project-desc en">A theoretical framework exploring the layers of inner life — from Identity → Consciousness → Unconscious → Sad Knowledge → Primordial Witness → Unitary Source.</p>
+      <div class="project-arrow">→ <span class="ar">اقرأ أكثر</span><span class="en">Read more</span></div>
+    </div>
+    <div class="project-card reveal" onmousemove="cardGlow(this,event)">
+      <span class="project-tag">AGI Alignment</span>
+      <h3 class="project-title ar">الانسجام عبر الوعي بالمصدر</h3>
+      <h3 class="project-title en">Alignment via Source-Awareness</h3>
+      <p class="project-desc ar">مقاربة جديدة لانسجام الذكاء الاصطناعي العام تعتمد على الوعي بالمصدر بدلاً من القيود الخارجية — مستوحاة من البنية النفسية الفرويدية.</p>
+      <p class="project-desc en">A novel approach to AGI alignment based on source-awareness rather than external constraints — inspired by Freudian tripartite psychological architecture.</p>
+      <div class="project-arrow">→ <span class="ar">اقرأ أكثر</span><span class="en">Read more</span></div>
+    </div>
+    <div class="project-card reveal" onmousemove="cardGlow(this,event)">
+      <span class="project-tag">Soon App</span>
+      <h3 class="project-title ar">تطبيق Soon النفسي الرقمي</h3>
+      <h3 class="project-title en">Soon Psycho-Digital App</h3>
+      <p class="project-desc ar">منصة للدعم النفسي تحترم الخصوصية، مبنية على مبدأ التوجيه الذاتي عبر اليوميات وتتبع العادات، للإنسان والحيوان على حدٍّ سواء.</p>
+      <p class="project-desc en">A privacy-respecting psychological support platform built on self-direction through journaling and habit tracking — for both humans and animals.</p>
+      <div class="project-arrow">→ <a href="https://www.soonpsy.com" target="_blank" style="color:inherit;text-decoration:none;"><span class="ar">زيارة التطبيق</span><span class="en">Visit App</span></a></div>
+    </div>
+    <div class="project-card reveal" onmousemove="cardGlow(this,event)">
+      <span class="project-tag">Philosophy of Mind</span>
+      <h3 class="project-title ar">النفس البشرية بديلاً عن "الذكاء"</h3>
+      <h3 class="project-title en">النفس البشرية as a Replacement for "Intelligence"</h3>
+      <p class="project-desc ar">إعادة صياغة مفهوم الطبيعة البشرية: النفس البشرية كمُعرِّف أدق وأشمل من مصطلح "الذكاء" في وصف الكائن الإنساني.</p>
+      <p class="project-desc en">Reframing human nature: the human psyche as a more precise and comprehensive descriptor than "intelligence" for defining what it means to be human.</p>
+      <div class="project-arrow">→ <span class="ar">اقرأ أكثر</span><span class="en">Read more</span></div>
+    </div>
+    <div class="project-card reveal" onmousemove="cardGlow(this,event)">
+      <span class="project-tag">SMMO Hypothesis</span>
+      <h3 class="project-title ar">اللغة كموسيقى — فرضية SMMO</h3>
+      <h3 class="project-title en">Language as Music — SMMO Hypothesis</h3>
+      <p class="project-desc ar">فرضية تُثبت أن اللغة في جوهرها موسيقى، مما يفتح آفاقاً جديدة في فهم التواصل البشري ومعالجة اللغة الطبيعية في الذكاء الاصطناعي.</p>
+      <p class="project-desc en">A hypothesis establishing that language is fundamentally musical — opening new horizons in understanding human communication and NLP in AI systems.</p>
+      <div class="project-arrow">→ <span class="ar">اقرأ أكثر</span><span class="en">Read more</span></div>
+    </div>
+    <div class="project-card reveal" onmousemove="cardGlow(this,event)">
+      <span class="project-tag">Creativity Theory</span>
+      <h3 class="project-title ar">الإبداع = إعادة الإمكانية</h3>
+      <h3 class="project-title en">Creativity = Re-Possibility</h3>
+      <p class="project-desc ar">تعريف جديد للإبداع يتجاوز المفاهيم التقليدية: الإبداع هو إعادة فتح الممكن في ما بدا مستحيلاً أو مغلقاً.</p>
+      <p class="project-desc en">A new definition of creativity beyond traditional concepts: creativity is the re-opening of possibility in what seemed impossible or closed.</p>
+      <div class="project-arrow">→ <span class="ar">اقرأ أكثر</span><span class="en">Read more</span></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- Publications -->
+<section id="publications">
+  <div class="section-label">
+    <span class="ar">المنشورات</span><span class="en">Publications</span>
+  </div>
+  <h2 class="section-title reveal">
+    <span class="ar">الأعمال<br>الأكاديمية</span>
+    <span class="en">Academic<br>Works</span>
+  </h2>
+  <div class="pub-list">
+    <div class="pub-item reveal">
+      <span class="pub-num">01</span>
+      <div>
+        <div class="pub-title ar">سلسلة Kaabar Psycho-AI — ثمانية أوراق بحثية</div>
+        <div class="pub-title en">Kaabar Psycho-AI Series — Eight Research Papers</div>
+        <div class="pub-meta">ResearchGate · Academia.edu</div>
+      </div>
+      <span class="pub-year">2025–26</span>
+    </div>
+    <div class="pub-item reveal">
+      <span class="pub-num">02</span>
+      <div>
+        <div class="pub-title ar">المفترس المعلوماتي الأعلى — The Apex Informational Predator</div>
+        <div class="pub-title en">The Apex Informational Predator</div>
+        <div class="pub-meta ar">كتاب أكاديمي</div>
+        <div class="pub-meta en">Academic Book</div>
+      </div>
+      <span class="pub-year">2024</span>
+    </div>
+    <div class="pub-item reveal">
+      <span class="pub-num">03</span>
+      <div>
+        <div class="pub-title ar">نظرية المشيمة — The Placenta Theory</div>
+        <div class="pub-title en">The Placenta Theory</div>
+        <div class="pub-meta ar">كتاب أكاديمي</div>
+        <div class="pub-meta en">Academic Book</div>
+      </div>
+      <span class="pub-year">2024</span>
+    </div>
+    <div class="pub-item reveal">
+      <span class="pub-num">04</span>
+      <div>
+        <div class="pub-title ar">الحمل السيليكوني — The Silicon Gestation</div>
+        <div class="pub-title en">The Silicon Gestation</div>
+        <div class="pub-meta ar">كتاب أكاديمي</div>
+        <div class="pub-meta en">Academic Book</div>
+      </div>
+      <span class="pub-year">2024</span>
+    </div>
+    <div class="pub-item reveal">
+      <span class="pub-num">05</span>
+      <div>
+        <div class="pub-title ar">بنية Psycho-AI للذكاء الاصطناعي العام</div>
+        <div class="pub-title en">Psycho-AI Architecture for AGI Alignment</div>
+        <div class="pub-meta">Academia.edu · Early 2026</div>
+      </div>
+      <span class="pub-year">2026</span>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- Contact -->
+<section id="contact">
+  <div class="section-label">
+    <span class="ar">تواصل</span><span class="en">Contact</span>
+  </div>
+  <h2 class="section-title reveal">
+    <span class="ar">لنتحدث<br>عن المستقبل</span>
+    <span class="en">Let's Talk<br>About the Future</span>
+  </h2>
+  <div class="contact-wrap">
+    <div class="reveal">
+      <p class="contact-text ar">أرحب بالتعاون البحثي، والحوارات الفكرية، وكل من يرى في تقاطع علم النفس والذكاء الاصطناعي فرصةً لفهم أعمق للوجود الإنساني.</p>
+      <p class="contact-text en">I welcome research collaborations, intellectual dialogues, and anyone who sees the intersection of psychology and AI as an opportunity for a deeper understanding of human existence.</p>
+      <a href="mailto:abdelkrim.kaabar@uit.ac.ma" class="btn-primary" style="display:inline-block;">
+        <span class="ar">راسلني</span><span class="en">Send Email</span>
+      </a>
+    </div>
+    <div class="social-links reveal">
+      <a href="https://x.com/AbdelkrimKaabar" target="_blank" class="social-link">
+        <span class="social-icon">𝕏</span>
+        <span>@AbdelkrimKaabar</span>
+      </a>
+      <a href="https://www.soonpsy.com" target="_blank" class="social-link">
+        <span class="social-icon">S</span>
+        <div>
+          <div>Soon App — Official</div>
+          <div style="font-size:11px;opacity:0.5;font-family:'Space Mono',monospace;margin-top:3px;">www.soonpsy.com</div>
+        </div>
+      </a>
+      <a href="https://soonpsy.lovable.app" target="_blank" class="social-link">
+        <span class="social-icon" style="font-size:9px;background:rgba(124,158,189,0.15);border:1px solid rgba(124,158,189,0.3);color:var(--accent2);">DEV</span>
+        <div>
+          <div style="color:var(--accent2);">Soon App — Dev Version</div>
+          <div style="font-size:11px;opacity:0.5;font-family:'Space Mono',monospace;margin-top:3px;">soonpsy.lovable.app</div>
+        </div>
+      </a>
+      <a href="https://www.researchgate.net" target="_blank" class="social-link">
+        <span class="social-icon">RG</span>
+        <span>ResearchGate Profile</span>
+      </a>
+      <a href="#" class="social-link">
+        <span class="social-icon">🎓</span>
+        <span><span class="ar">جامعة ابن طفيل، القنيطرة</span><span class="en">Ibn Tofail University, Kénitra</span></span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span class="ar">© 2026 عبدالكريم قبار — جميع الحقوق محفوظة</span>
+  <span class="en">© 2026 Abdelkrim Kaabar — All Rights Reserved</span>
+</footer>
+
+<script>
+  // Cursor
+  const cursor = document.getElementById('cursor');
+  const follower = document.getElementById('follower');
+  let mx = 0, my = 0, fx = 0, fy = 0;
+
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.left = mx - 6 + 'px';
+    cursor.style.top = my - 6 + 'px';
+  });
+
+  function animFollower() {
+    fx += (mx - fx) * 0.12;
+    fy += (my - fy) *.12;
+    follower.style.left = fx - 18 + 'px';
+    follower.style.top = fy - 18 + 'px';
+    requestAnimationFrame(animFollower);
+  }
+  animFollower();
+
+  document.querySelectorAll('a, button, .project-card, .pub-item').forEach(el => {
+    el.addEventListener('mouseenter', () => cursor.style.transform = 'scale(2.5)');
+    el.addEventListener('mouseleave', () => cursor.style.transform = 'scale(1)');
+  });
+
+  // Language toggle
+  function setLang(lang) {
+    document.documentElement.lang = lang;
+    document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+    document.getElementById('btn-ar').classList.toggle('active', lang === 'ar');
+    document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+  }
+
+  // Scroll reveal
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // Card glow
+  function cardGlow(card, e) {
+    const rect = card.getBoundingClientRect();
+    card.style.setProperty('--mx', ((e.clientX - rect.left) / rect.width * 100) + '%');
+    card.style.setProperty('--my', ((e.clientY - rect.top) / rect.height * 100) + '%');
+  }
+</script>
+</body>
+</html>
