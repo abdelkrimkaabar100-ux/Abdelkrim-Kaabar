@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>معرض بداية الإسلام التفاعلي</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/animations.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">
+                <h1>🕌 معرض بداية الإسلام</h1>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#home" class="nav-link active">الرئيسية</a></li>
+                <li><a href="#timeline" class="nav-link">المراحل التاريخية</a></li>
+                <li><a href="#exhibits" class="nav-link">المعروضات</a></li>
+                <li><a href="#learn" class="nav-link">تعلم المزيد</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title fade-in">رحلة بداية الإسلام</h1>
+            <p class="hero-subtitle fade-in delay-1">معرض تفاعلي يروي قصة نشأة الدين الإسلامي</p>
+            <button class="cta-button fade-in delay-2" onclick="scrollToSection('timeline')">ابدأ الرحلة</button>
+        </div>
+        <div class="hero-background"></div>
+    </section>
+
+    <!-- Timeline Section -->
+    <section id="timeline" class="timeline-section">
+        <div class="container">
+            <h2 class="section-title">المراحل التاريخية الرئيسية</h2>
+            
+            <div class="timeline">
+                <!-- Stage 1 -->
+                <div class="timeline-item" data-stage="1">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content slide-in">
+                        <div class="year">قبل البعثة</div>
+                        <h3>البيئة الجاهلية</h3>
+                        <p>العالم العربي قبل ظهور الإسلام، الحياة الاجتماعية والدينية في جزيرة العرب</p>
+                        <button class="learn-btn" onclick="showExhibit(1)">اكتشف المزيد</button>
+                    </div>
+                </div>
+
+                <!-- Stage 2 -->
+                <div class="timeline-item" data-stage="2">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content slide-in">
+                        <div class="year">610 م</div>
+                        <h3>بداية الوحي والدعوة السرية</h3>
+                        <p>نزول الوحي في غار حراء والدعوة السرية لمدة ثلاث سنوات</p>
+                        <button class="learn-btn" onclick="showExhibit(2)">اكتشف المزيد</button>
+                    </div>
+                </div>
+
+                <!-- Stage 3 -->
+                <div class="timeline-item" data-stage="3">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content slide-in">
+                        <div class="year">613 م</div>
+                        <h3>الدعوة العلنية</h3>
+                        <p>بدء الدعوة العلنية والتحديات مع قريش وبداية الاضطهاد</p>
+                        <button class="learn-btn" onclick="showExhibit(3)">اكتشف المزيد</button>
+                    </div>
+                </div>
+
+                <!-- Stage 4 -->
+                <div class="timeline-item" data-stage="4">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content slide-in">
+                        <div class="year">615 م</div>
+                        <h3>الهجرة إلى الحبشة</h3>
+                        <p>هجرة المسلمين الأولى إلى الحبشة هرباً من الاضطهاد</p>
+                        <button class="learn-btn" onclick="showExhibit(4)">اكتشف المزيد</button>
+                    </div>
+                </div>
+
+                <!-- Stage 5 -->
+                <div class="timeline-item" data-stage="5">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content slide-in">
+                        <div class="year">619 م</div>
+                        <h3>عام الحزن</h3>
+                        <p>وفاة خديجة وأبي طالب، وازدياد الاضطهاد والمحن</p>
+                        <button class="learn-btn" onclick="showExhibit(5)">اكتشف المزيد</button>
+                    </div>
+                </div>
+
+                <!-- Stage 6 -->
+                <div class="timeline-item" data-stage="6">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content slide-in">
+                        <div class="year">621 م</div>
+                        <h3>الإسراء والمعراج</h3>
+                        <p>حادثة الإسراء والمعراج ومفروضية الصلوات الخمس</p>
+                        <button class="learn-btn" onclick="showExhibit(6)">اكتشف المزيد</button>
+                    </div>
+                </div>
+
+                <!-- Stage 7 -->
+                <div class="timeline-item" data-stage="7">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content slide-in">
+                        <div class="year">622 م</div>
+                        <h3>الهجرة النبوية</h3>
+                        <p>الهجرة إلى المدينة وتأسيس الدولة الإسلامية</p>
+                        <button class="learn-btn" onclick="showExhibit(7)">اكتشف المزيد</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Exhibits Modal -->
+    <div id="exhibit-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <div class="modal-body">
+                <div class="exhibit-image">
+                    <img id="exhibit-img" src="" alt="معرض">
+                </div>
+                <div class="exhibit-text">
+                    <h2 id="exhibit-title"></h2>
+                    <div id="exhibit-description"></div>
+                    <div id="exhibit-details"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Interactive Map Section -->
+    <section id="map" class="map-section">
+        <div class="container">
+            <h2 class="section-title">خريطة الأحداث التفاعلية</h2>
+            <div class="map-container">
+                <svg class="map-svg" viewBox="0 0 1000 600">
+                    <!-- Mecca -->
+                    <circle cx="400" cy="300" r="40" class="location mecca" onclick="showLocation('mecca')">
+                        <title>مكة المكرمة</title>
+                    </circle>
+                    <text x="400" y="380" class="location-label">مكة المكرمة</text>
+
+                    <!-- Medina -->
+                    <circle cx="450" cy="250" r="40" class="location medina" onclick="showLocation('medina')">
+                        <title>المدينة المنورة</title>
+                    </circle>
+                    <text x="450" y="320" class="location-label">المدينة</text>
+
+                    <!-- Abyssinia -->
+                    <circle cx="600" cy="400" r="40" class="location abyssinia" onclick="showLocation('abyssinia')">
+                        <title>الحبشة</title>
+                    </circle>
+                    <text x="600" y="480" class="location-label">الحبشة</text>
+
+                    <!-- Cave of Hira -->
+                    <circle cx="380" cy="280" r="30" class="location hira" onclick="showLocation('hira')">
+                        <title>غار حراء</title>
+                    </circle>
+                    <text x="340" y="340" class="location-label">غار حراء</text>
+                </svg>
+            </div>
+            <div id="location-info" class="location-info">
+                <p>اضغط على المواقع لمعرفة المزيد</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Learning Section -->
+    <section id="learn" class="learning-section">
+        <div class="container">
+            <h2 class="section-title">اختبر معلوماتك</h2>
+            <div class="quiz-container">
+                <div class="quiz-item">
+                    <h3>السؤال 1: متى نزل الوحي على النبي محمد ﷺ؟</h3>
+                    <div class="quiz-options">
+                        <button class="quiz-btn" onclick="checkAnswer(1, 'a')">أ) 610 م</button>
+                        <button class="quiz-btn" onclick="checkAnswer(1, 'b')">ب) 613 م</button>
+                        <button class="quiz-btn" onclick="checkAnswer(1, 'c')">ج) 615 م</button>
+                    </div>
+                </div>
+
+                <div class="quiz-item">
+                    <h3>السؤال 2: كم استمرت الدعوة السرية؟</h3>
+                    <div class="quiz-options">
+                        <button class="quiz-btn" onclick="checkAnswer(2, 'a')">أ) سنة واحدة</button>
+                        <button class="quiz-btn" onclick="checkAnswer(2, 'b')">ب) سنتان</button>
+                        <button class="quiz-btn" onclick="checkAnswer(2, 'c')">ج) ثلاث سنوات</button>
+                    </div>
+                </div>
+
+                <div class="quiz-item">
+                    <h3>السؤال 3: إلى أين هاجر المسلمون الأوائل هروباً من الاضطهاد؟</h3>
+                    <div class="quiz-options">
+                        <button class="quiz-btn" onclick="checkAnswer(3, 'a')">أ) الشام</button>
+                        <button class="quiz-btn" onclick="checkAnswer(3, 'b')">ب) الحبشة</button>
+                        <button class="quiz-btn" onclick="checkAnswer(3, 'c')">ج) مصر</button>
+                    </div>
+                </div>
+            </div>
+            <div id="quiz-result" class="quiz-result"></div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 معرض بداية الإسلام التفاعلي. جميع الحقوق محفوظة.</p>
+            <p>منصة تفاعلية لتعليم وتوعية عن بداية الدعوة الإسلامية</p>
+        </div>
+    </footer>
+
+    <script src="islamic-exhibition/js/script.js"></script>
+    <script src="islamic-exhibition/js/exhibits.js"></script>
+</body>
+</html>
